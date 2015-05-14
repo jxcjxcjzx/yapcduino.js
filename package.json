@@ -14,7 +14,7 @@
     "pcduino"
   ],
   "author": "Zeno Zeng",
-  "license": "MIT",
+  "license": "LGPL",
   "bugs": {
     "url": "https://github.com/zenozeng/yapcduino.js/issues"
   },
