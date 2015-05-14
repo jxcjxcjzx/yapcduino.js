@@ -8,7 +8,7 @@ API.analogWrite = pcduino.digital.analogWrite;
 API.analogRead = pcduino.digital.analogRead;
 
 // load extra native API
-var ExtraNative = require('./../build/Release/yapcduino');
+var ExtraNative = require('./build/Release/yapcduino');
 
 /**
  * Set Pulse

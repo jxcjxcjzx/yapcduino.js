@@ -39,10 +39,8 @@ Handle<Value> setPulse(const Arguments& args) {
 
 void Init(Handle<Object> exports)
 {
-    init();
-
     exports->Set(v8::String::NewSymbol("setPulse"),
                  FunctionTemplate::New(setPulse)->GetFunction());
 }
 
-NODE_MODULE(node_pcduino_helper, Init)
+NODE_MODULE(yapcduino, Init)
