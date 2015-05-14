@@ -1,0 +1,24 @@
+{
+  "name": "yapcduino",
+  "version": "0.1.0",
+  "description": "Yet another nodejs library for pcduino (extends jheising's node.pcduino but provide simple API and some extra function).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zenozeng/yapcduino.js.git"
+  },
+  "keywords": [
+    "pcduino"
+  ],
+  "author": "Zeno Zeng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zenozeng/yapcduino.js/issues"
+  },
+  "dependencies": {
+    "pcduino": "0.0.6"
+  }
+}
