@@ -22,7 +22,7 @@ Handle<Value> pulseIn(const Arguments& args) {
     return scope.Close(num);
 }
 
-Handle<Value> setPulse(const Arguments& args) {
+Handle<Value> digitalPulse(const Arguments& args) {
     HandleScope scope;
 
     int pin = args[0]->NumberValue();
@@ -47,8 +47,8 @@ void Init(Handle<Object> exports)
     exports->Set(v8::String::NewSymbol("pulseIn"),
                  FunctionTemplate::New(pulseIn)->GetFunction());
 
-    exports->Set(v8::String::NewSymbol("setPulse"),
-                 FunctionTemplate::New(setPulse)->GetFunction());
+    exports->Set(v8::String::NewSymbol("digitalPulse"),
+                 FunctionTemplate::New(digitalPulse)->GetFunction());
 }
 
 NODE_MODULE(yapcduino, Init)
