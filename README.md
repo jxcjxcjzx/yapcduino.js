@@ -16,3 +16,7 @@ p.PIN_COUNT // GPIO pin count
 p.pinMode(10, p.INPUT); // Set pin #10 to input
 p.pinMode(10, p.INPUT_PU); // Set pin #10 to input with pull-up
 ```
+
+## Source
+
+The src/arduino comes from https://github.com/pcduino/c_environment

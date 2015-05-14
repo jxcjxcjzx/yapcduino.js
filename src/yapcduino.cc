@@ -1,6 +1,6 @@
 #define BUILDING_NODE_EXTENSION
 #include <node.h>
-#include <Arduino.h>
+#include "./arduino/Arduino.h"
 
 using namespace v8;
 
