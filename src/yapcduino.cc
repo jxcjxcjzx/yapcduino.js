@@ -4,13 +4,16 @@
 
 using namespace v8;
 
+// http://www.arduino.cc/en/Tutorial/Ping
+// http://www.arduino.cc/en/Reference/PulseIn
 Handle<Value> pulseIn(const Arguments& args) {
     HandleScope scope;
 
     int pin = args[0]->NumberValue();
     int value = args[1]->NumberValue(); // type of pulse to read: either HIGH or LOW (int)
+    int timeout = args[2]->NumberValue();
 
-    int us = pulseIn(pin, value); // the length of the pulse in us
+    int us = pulseIn(pin, value, timeout); // the length of the pulse in us
 
     Local<Number> num = Number::New(us);
     return scope.Close(num);

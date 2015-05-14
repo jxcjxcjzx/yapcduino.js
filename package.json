@@ -1,6 +1,6 @@
 {
   "name": "yapcduino",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Yet another nodejs library for pcduino (extends jheising's node.pcduino but provide simple API and some extra function).",
   "main": "index.js",
   "scripts": {

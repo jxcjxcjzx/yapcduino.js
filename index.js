@@ -13,12 +13,12 @@ var ExtraNative = require('./../build/Release/yapcduino');
 /**
  * Set Pulse
  *
- * @param {Int} pin - Pin number
+ * @param {Int} pin - Pin ID
  * @param {Int} pulse - Pluse in us
  * @param {Int} period - Period in us, defaults to 20 * 1000
  * @param {Int} loops - Loop how many times, defaults to 1
  */
-var setPulse = function(pin, pulse, period, loops) {
+API.setPulse = function(pin, pulse, period, loops) {
     if (typeof period === "undefined") {
         period = 20;
     }
@@ -26,6 +26,20 @@ var setPulse = function(pin, pulse, period, loops) {
         loops = 1;
     }
     ExtraNative.setPulse(pin, pulse, period, loops);
+};
+
+/**
+ * pulseIn
+ *
+ * @param {Int} pin - Pin ID
+ * @param {Int} value - Type of pulse to read: either pcduino.HIGH or pcduino.LOW (int)
+ * @param {Int} timeout - The number of microseconds to wait for the pulse to start; default is one second
+ */
+API.pulseIn = function(pin, value, timeout) {
+    if (typeof timeout === "undefined") {
+        timeout = 1000 * 1000; // 1s
+    }
+    ExtraNative.pulseIn(pin, value, timeout);
 };
 
 
