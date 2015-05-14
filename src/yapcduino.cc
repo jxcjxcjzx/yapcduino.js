@@ -1,8 +1,11 @@
-#define BUILDING_NODE_EXTENSION
 #include <node.h>
 #include "./arduino/Arduino.h"
+#include <unistd.h>
 
 using namespace v8;
+
+// Handle<Value> usleep(const Arguments& args) {
+// }
 
 // http://www.arduino.cc/en/Tutorial/Ping
 // http://www.arduino.cc/en/Reference/PulseIn
@@ -29,9 +32,9 @@ Handle<Value> setPulse(const Arguments& args) {
 
     for (int i = 0; i < loops; i++) {
         digitalWrite(pin, HIGH);
-        delayMicroseconds(pulse);
+        usleep(pulse);
         digitalWrite(pin, LOW);
-        delayMicroseconds(period - pulse);
+        usleep(period - pulse);
     }
 
     return scope.Close(Undefined());
@@ -39,6 +42,11 @@ Handle<Value> setPulse(const Arguments& args) {
 
 void Init(Handle<Object> exports)
 {
+    init(); // important! init is defined in wiring.c
+
+    exports->Set(v8::String::NewSymbol("pulseIn"),
+                 FunctionTemplate::New(pulseIn)->GetFunction());
+
     exports->Set(v8::String::NewSymbol("setPulse"),
                  FunctionTemplate::New(setPulse)->GetFunction());
 }
