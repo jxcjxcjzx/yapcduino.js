@@ -10,23 +10,9 @@ API.analogRead = pcduino.digital.analogRead;
 // load extra native API
 var ExtraNative = require('./build/Release/yapcduino');
 
-/**
- * Use DigitalWrite to Output a Pulse
- *
- * @param {Int} pin - Pin ID
- * @param {Int} pulse - Pluse in us
- * @param {Int} period - Period in us, defaults to 20 * 1000
- * @param {Int} loops - Loop how many times, defaults to 1
- */
-API.digitalPulse = function(pin, pulse, period, loops) {
-    if (typeof period === "undefined") {
-        period = 20;
-    }
-    if (typeof loops === "undefined") {
-        loops = 1;
-    }
-    ExtraNative.digitalPulse(pin, pulse, period, loops);
-};
+var digitalPulse = require('./lib/digital-pulse');
+
+API.digitalPulse = digitalPulse.digitalPulse;
 
 /**
  * pulseIn
