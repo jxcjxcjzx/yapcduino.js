@@ -4,9 +4,6 @@
 
 using namespace v8;
 
-// Handle<Value> usleep(const Arguments& args) {
-// }
-
 // http://www.arduino.cc/en/Tutorial/Ping
 // http://www.arduino.cc/en/Reference/PulseIn
 Handle<Value> pulseIn(const Arguments& args) {
@@ -40,6 +37,15 @@ Handle<Value> digitalPulse(const Arguments& args) {
     return scope.Close(Undefined());
 }
 
+Handle<Value> usleep(const Arguments& args) {
+    HandleScope scope;
+
+    int us = args[0]->NumberValue();
+    usleep(us);
+
+    return scope.Close(Undefined());
+}
+
 void Init(Handle<Object> exports)
 {
     init(); // important! init is defined in wiring.c
@@ -49,6 +55,9 @@ void Init(Handle<Object> exports)
 
     exports->Set(v8::String::NewSymbol("digitalPulse"),
                  FunctionTemplate::New(digitalPulse)->GetFunction());
+
+    exports->Set(v8::String::NewSymbol("usleep"),
+                 FunctionTemplate::New(usleep)->GetFunction());
 }
 
 NODE_MODULE(yapcduino, Init)

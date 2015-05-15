@@ -8,9 +8,18 @@ API.analogWrite = pcduino.analog.analogWrite;
 API.analogRead = pcduino.analog.analogRead;
 
 // load extra native API
-var ExtraNative = require('./build/Release/yapcduino');
+var Native = require('./build/Release/yapcduino');
 
 API.digitalWritePWM = require('./lib/digital-write-pwm');
+
+/**
+ * Suspend execution for microsecond intervals
+ *
+ * @param {Int} us - time for suspending
+ */
+API.usleep = function(us) {
+    Native.usleep(us);
+};
 
 /**
  * pulseIn
@@ -23,7 +32,7 @@ API.pulseIn = function(pin, value, timeout) {
     if (typeof timeout === "undefined") {
         timeout = 1000 * 1000; // 1s
     }
-    ExtraNative.pulseIn(pin, value, timeout);
+    Native.pulseIn(pin, value, timeout);
 };
 
 
