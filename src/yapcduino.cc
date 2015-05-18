@@ -1,4 +1,5 @@
 #include <node.h>
+#include <uv.h>
 #include "./arduino/Arduino.h"
 #include <unistd.h>
 
@@ -17,6 +18,33 @@ Handle<Value> pulseIn(const Arguments& args) {
 
     Local<Number> num = Number::New(us);
     return scope.Close(num);
+}
+
+void digitalWritePWM(int pin, double dutyCycle, int period, int loops, bool keepLooping) {
+    int sleeptime = dutyCycle * period;
+
+    while (keepLooping || loops-- > 0) {
+        digitalWrite(pin, HIGH);
+        usleep(sleeptime);
+        digitalWrite(pin, LOW);
+        usleep(period - sleeptime);
+    }
+}
+
+Handle<Value> digitalWritePWM(const Arguments& args) {
+    HandleScope scope;
+
+    int pin = args[0]->NumberValue();
+    double dutyCycle = args[1]->NumberValue();
+    int period = args[2]->NumberValue();
+    int loops = args[3]->NumberValue();
+    bool sync = args[4]->NumberValue() == 1;
+    bool keepLooping = loops == -1;
+
+    if (sync) {
+        digitalWritePWM(pin, dutyCycle, period, loops, keepLooping);
+    } else {
+    }
 }
 
 Handle<Value> digitalPulse(const Arguments& args) {
