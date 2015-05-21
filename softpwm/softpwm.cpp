@@ -5,32 +5,44 @@
 
 using namespace std;
 
-void *fn(void* _highus);
-
-void *fn(void* _highus)
+struct PWM
 {
+    int highus;
+    int lowus;
+    int pin;
+};
+
+void *fn(void* _pwm);
+
+void *fn(void* _pwm)
+{
+    PWM* pwmptr = (PWM *) _pwm;
+    PWM pwm;
+    int pin, highus, lowus;
+
     for (;;) {
-        int *highus;
-        // int *lowus;
-        highus = (int *) _highus;
-        // lowus = (int *) _lowus;
-        // cout << highus << "," << lowus << endl;
-        cout << *highus << endl;
+        pwm = *pwmptr;
+        pin = pwm.pin;
+        highus = pwm.highus;
+        lowus = pwm.lowus;
+        cout << pin << "," << highus << "," << lowus << endl;
     }
 }
 
 int main() {
-    cout << "init softpwm" << endl;
+    PWM pwm;
+    pwm.highus = 100;
+    pwm.lowus = 200;
+    pwm.pin = 1;
+
     pthread_t thread1;
-    int highus = 100;
-    int lowus = 10;
     pthread_create(&thread1,
                    NULL,
                    fn,
-                   (void*) &highus);
+                   (void*) &pwm);
     usleep(100);
-    highus = 200;
-    lowus = 20;
+    pwm.highus = 200;
+    pwm.lowus = 400;
     usleep(100);
     pthread_kill(thread1, 9);
     return 0;
