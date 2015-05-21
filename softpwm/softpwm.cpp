@@ -1,5 +1,6 @@
 #include <iostream>
 #include <pthread.h>
+#include <signal.h>
 #include <unistd.h>
 
 using namespace std;
@@ -31,5 +32,6 @@ int main() {
     highus = 200;
     lowus = 20;
     usleep(100);
+    pthread_kill(thread1, 9);
     return 0;
 }
