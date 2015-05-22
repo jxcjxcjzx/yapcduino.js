@@ -22,33 +22,6 @@ Handle<Value> pulseIn(const Arguments& args) {
     return scope.Close(num);
 }
 
-void digitalWritePWM(int pin, double dutyCycle, int period, int loops, bool keepLooping) {
-    int sleeptime = dutyCycle * period;
-
-    while (keepLooping || loops-- > 0) {
-        digitalWrite(pin, HIGH);
-        usleep(sleeptime);
-        digitalWrite(pin, LOW);
-        usleep(period - sleeptime);
-    }
-}
-
-Handle<Value> digitalWritePWM(const Arguments& args) {
-    HandleScope scope;
-
-    int pin = args[0]->NumberValue();
-    double dutyCycle = args[1]->NumberValue();
-    int period = args[2]->NumberValue();
-    int loops = args[3]->NumberValue();
-    bool sync = args[4]->NumberValue() == 1;
-    bool keepLooping = loops == -1;
-
-    if (sync) {
-        digitalWritePWM(pin, dutyCycle, period, loops, keepLooping);
-    } else {
-    }
-}
-
 Handle<Value> digitalPulse(const Arguments& args) {
     HandleScope scope;
 
@@ -82,8 +55,36 @@ Handle<Value> setSoftPWM(const Arguments& args) {
     int pin = args[0]->NumberValue();
     int highus = args[1]->NumberValue();
     int lowus = args[2]->NumberValue();
+    int loops_to_live = args[3]->NumberValue();
 
-    set_soft_pwm(pin, highus, lowus);
+    set_soft_pwm(pin, highus, lowus, loops_to_live);
+
+    return scope.Close(Undefined());
+}
+
+Handle<Value> setSoftPWMSync(const Arguments& args) {
+    HandleScope scope;
+
+    int pin = args[0]->NumberValue();
+    int highus = args[1]->NumberValue();
+    int lowus = args[2]->NumberValue();
+    int loops_to_live = args[3]->NumberValue();
+
+    set_soft_pwm_sync(pin, highus, lowus, loops_to_live);
+
+    return scope.Close(Undefined());
+}
+
+Handle<Value> getSoftPWMLoopsCount(const Arguments& args) {
+    HandleScope scope;
+
+    int pin = args[0]->NumberValue();
+    int original_loops_to_live = args[1]->NumberValue();
+
+    int count = get_soft_pwm_loops_count(pin, original_loops_to_live);
+
+    Local<Number> num = Number::New(count);
+    return scope.Close(num);
 }
 
 Handle<Value> unsetSoftPWM(const Arguments& args) {
@@ -92,6 +93,8 @@ Handle<Value> unsetSoftPWM(const Arguments& args) {
     int pin = args[0]->NumberValue();
 
     unset_soft_pwm(pin);
+
+    return scope.Close(Undefined());
 }
 
 void Init(Handle<Object> exports)
@@ -110,9 +113,14 @@ void Init(Handle<Object> exports)
     exports->Set(v8::String::NewSymbol("setSoftPWM"),
                  FunctionTemplate::New(setSoftPWM)->GetFunction());
 
+    exports->Set(v8::String::NewSymbol("setSoftPWMSync"),
+                 FunctionTemplate::New(setSoftPWMSync)->GetFunction());
+
     exports->Set(v8::String::NewSymbol("unsetSoftPWM"),
                  FunctionTemplate::New(unsetSoftPWM)->GetFunction());
 
+    exports->Set(v8::String::NewSymbol("getSoftPWMLoopsCount"),
+                 FunctionTemplate::New(getSoftPWMLoopsCount)->GetFunction());
 }
 
 NODE_MODULE(yapcduino, Init)

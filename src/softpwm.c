@@ -34,7 +34,7 @@ void *set_soft_pwm(void* _pwm)
 
 // get how many loops of the pin since last set
 // use get_loops_lived(pin, -1) if original is run forever
-int get_loops_lived(int pin, int original_loops_to_live) {
+int get_soft_pwm_loops_count(int pin, int original_loops_to_live) {
     original_loops_to_live = original_loops_to_live < 0 ? 2147483647 : original_loops_to_live;
     PWM* pwm_ptr = &(pwms[pin]);
     return original_loops_to_live - pwm_ptr->loops_to_live;
@@ -60,10 +60,11 @@ void set_soft_pwm(int pin, int highus, int lowus, int loops_to_live) {
     thread_exists[pin] = true;
 }
 
-/* void set_soft_pwm_sync(int pin, int highus, int lowus, int loops_to_live) { */
-/*     set_soft_pwm(pin, highus, lowus, loops_to_live); */
-/*     // pthread_join */
-/* } */
+void set_soft_pwm_sync(int pin, int highus, int lowus, int loops_to_live) {
+    set_soft_pwm(pin, highus, lowus, loops_to_live);
+    void **retval;
+    pthread_join(threads[pin], retval);
+}
 
 // (sync version) wait till pthread exited
 void unset_soft_pwm(int pin)
