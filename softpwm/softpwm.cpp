@@ -2,7 +2,6 @@
 // Special thanks to Senorsen Zhang, Robert Zhang
 
 #include <pthread.h>
-#include <signal.h>
 #include <unistd.h>
 
 #define DEBUG true
