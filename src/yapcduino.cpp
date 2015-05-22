@@ -81,7 +81,7 @@ Handle<Value> getSoftPWMLoopCount(const Arguments& args) {
     int pin = args[0]->NumberValue();
     int original_loops_to_live = args[1]->NumberValue();
 
-    int count = get_soft_pwm_loops_count(pin, original_loops_to_live);
+    int count = get_soft_pwm_loop_count(pin, original_loops_to_live);
 
     Local<Number> num = Number::New(count);
     return scope.Close(num);

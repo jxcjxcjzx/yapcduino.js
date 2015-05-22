@@ -1,4 +1,4 @@
-#ifdef _SOFTPWM_H_
+#ifndef _SOFTPWM_H_
 #define _SOFTPWM_H_
 
 void set_soft_pwm(int pin, int highus, int lowus, int loops_to_live);
