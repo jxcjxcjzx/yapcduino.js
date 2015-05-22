@@ -1,7 +1,11 @@
 var pcduino = require('pcduino');
 
+var API = {};
+
 // load digital API
-var API = Object.create(pcduino.digital);
+Object.keys(pcduino.digital).forEach(function(method) {
+    API[method] = pcduino.digital[method];
+});
 
 // load analog API
 API.analogWrite = pcduino.analog.analogWrite;
@@ -10,16 +14,19 @@ API.analogRead = pcduino.analog.analogRead;
 // load extra native API
 var Native = require('./build/Release/yapcduino');
 
-API.digitalWritePWM = require('./lib/digital-write-pwm');
-
 /**
- * Suspend execution for microsecond intervals
+ * Suspend execution for given microseconds
  *
  * @param {Int} us - time for suspending
  */
-API.usleep = function(us) {
-    Native.usleep(us);
-};
+API.usleep = Native.usleep;
+
+/**
+ * Suspend execution for given microseconds
+ *
+ * @param {Int} us - time for suspending
+ */
+API.delayMicroseconds = Native.usleep;
 
 /**
  * pulseIn
