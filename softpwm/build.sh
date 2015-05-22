@@ -1,1 +1,1 @@
-g++ -lpthread -o softpwm.out softpwm.cpp
+g++ -lpthread -O3 -o softpwm.out softpwm.cpp

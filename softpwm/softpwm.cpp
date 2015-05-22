@@ -18,54 +18,65 @@ struct PWM
 void *set_soft_pwm(void* _pwm)
 {
     PWM* pwmptr = (PWM *) _pwm;
-    PWM pwm;
-    int pin, highus, lowus;
 
     for (;;) {
-        pwm = *pwmptr;
-        pin = pwm.pin;
-        highus = pwm.highus;
-        lowus = pwm.lowus;
         // digitalwrite 1
         //usleep(highus);
         // digitalwrite 0
         // usleep(lowus);
-        cout << endl;
-        cout << "pin: " << pin << ", high: " << highus << ", low:" << lowus << endl;
+        sleep(1);
+        if (pwmptr->pin == -1) {
+            break;
+        }
+        cout << "pin: " << pwmptr->pin << ", high: " << pwmptr->highus << ", low:" << pwmptr->lowus << endl;
     }
 }
 
 pthread_t threads[18];
 PWM pwms[18];
+bool thread_exists[18];
 
 void set_soft_pwm(int pin, int highus, int lowus) {
     PWM* pwm_ptr = &(pwms[pin]);
-    (*pwm_ptr).pin = pin;
-    (*pwm_ptr).highus = highus;
-    (*pwm_ptr).lowus = lowus;
+    pwm_ptr->pin = pin;
+    pwm_ptr->highus = highus;
+    pwm_ptr->lowus = lowus;
 
     pthread_t* thread_ptr = &(threads[pin]);
-    pthread_create(thread_ptr,
-                   NULL,
-                   set_soft_pwm,
-                   (void*) pwm_ptr);
+    if (!thread_exists[pin]) {
+        if (0 != pthread_create(thread_ptr, NULL, set_soft_pwm, (void*) pwm_ptr)) {
+            cout << "Fail to create pthread#" << pin << endl;
+            return;
+        }
+        cout << "Success to create pthread#" << pin << endl;
+        thread_exists[pin] = true;
+    }
 }
 
-void unset_soft_pwm(int pin) {
-    pthread_kill(threads[pin], 9);
+void unset_soft_pwm(int pin)
+{
+    cout << "Try to kill pthread#" << pin << endl;
+
+    PWM* pwm_ptr = &(pwms[pin]);
+    pwm_ptr->pin = -1;
+    thread_exists[pin] = false;
 }
 
 int main() {
+    cout << "stage 1" << endl;
     set_soft_pwm(1, 100, 200);
-    usleep(200);
+    set_soft_pwm(2, 100, 200);
+    sleep(3);
 
-    // set_soft_pwm(2, 100, 200);
+    cout << "stage 2" << endl;
     set_soft_pwm(1, 200, 400);
-    usleep(200);
+    sleep(3);
 
-    // set_soft_pwm(1, 200, 400);
-    // set_soft_pwm(2, 200, 400);
+    cout << "stage 3" << endl;
     unset_soft_pwm(1);
+    sleep(3);
+
+    cout << "stage 4" << endl;
 
     return 0;
 }
