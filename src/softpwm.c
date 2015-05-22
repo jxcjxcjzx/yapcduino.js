@@ -17,18 +17,14 @@ struct PWM
     int highus;
     int lowus;
     int pin;
-    int loops;
+    int loops_to_live;
 };
 
 void *set_soft_pwm(void* _pwm)
 {
     PWM* pwm_ptr = (PWM *) _pwm;
 
-    for (;;) {
-        if (pwmptr->pin == -1) {
-            break;
-        }
-
+    while (pwm_ptr->loops_to_live-- > 0) {
         digitalWrite(pin, HIGH);
         usleep(pwm_ptr->highus);
         digitalWrite(pin, LOW);
@@ -36,20 +32,38 @@ void *set_soft_pwm(void* _pwm)
     }
 }
 
+// get how many loops of the pin since last set
+// use get_loops_lived(pin, -1) if original is run forever
+int get_loops_lived(int pin, int original_loops_to_live) {
+    original_loops_to_live = original_loops_to_live < 0 ? 2147483647 : original_loops_to_live;
+    PWM* pwm_ptr = &(pwms[pin]);
+    return original_loops_to_live - pwm_ptr->loops_to_live;
+}
+
 // run soft pwm in thread#pin forever(loops = -1) or for n loops (async)
-void set_soft_pwm(int pin, int highus, int lowus, int loops) {
+// note that max loops_to_live is 2147483647
+// count can be calculated based on orginal loops_to_live and current loops_to_live
+void set_soft_pwm(int pin, int highus, int lowus, int loops_to_live) {
     PWM* pwm_ptr = &(pwms[pin]);
     pwm_ptr->pin = pin;
     pwm_ptr->highus = highus;
     pwm_ptr->lowus = lowus;
-    pwm_ptr->loops = loops;
+    pwm_ptr->loops_to_live = loops_to_live < 0 ? 2147483647 : loops_to_live;
 
+    if (thread_exists[pin]) {
+        return;
+    }
     pthread_t* thread_ptr = &(threads[pin]);
     if (0 != pthread_create(thread_ptr, NULL, set_soft_pwm, (void*) pwm_ptr)) {
-        return;
+        return; // error occurs
     }
     thread_exists[pin] = true;
 }
+
+/* void set_soft_pwm_sync(int pin, int highus, int lowus, int loops_to_live) { */
+/*     set_soft_pwm(pin, highus, lowus, loops_to_live); */
+/*     // pthread_join */
+/* } */
 
 // (sync version) wait till pthread exited
 void unset_soft_pwm(int pin)
@@ -59,7 +73,7 @@ void unset_soft_pwm(int pin)
     // wait until pthread no longer running
     while (pthread_kill(threads[pin], 0) == 0)
     {
-        pwm_ptr->pin = -1;
+        pwm_ptr->loops_to_live = 0;
         usleep(10);
     }
 
