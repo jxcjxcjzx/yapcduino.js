@@ -1,10 +1,15 @@
 // Copyright (c) 2015 Zeno Zeng, licensed under LGPL
-// Special thanks to Senorsen Zhang
+// Special thanks to Senorsen Zhang, Robert Zhang
 
-#include <iostream>
 #include <pthread.h>
 #include <signal.h>
 #include <unistd.h>
+
+#define DEBUG true
+
+#ifdef DEBUG
+#include <iostream>
+#endif
 
 using namespace std;
 
@@ -28,7 +33,10 @@ void *set_soft_pwm(void* _pwm)
         if (pwmptr->pin == -1) {
             break;
         }
+
+#ifdef DEBUG
         cout << "pin: " << pwmptr->pin << ", high: " << pwmptr->highus << ", low:" << pwmptr->lowus << endl;
+#endif
     }
 }
 
@@ -45,17 +53,23 @@ void set_soft_pwm(int pin, int highus, int lowus) {
     pthread_t* thread_ptr = &(threads[pin]);
     if (!thread_exists[pin]) {
         if (0 != pthread_create(thread_ptr, NULL, set_soft_pwm, (void*) pwm_ptr)) {
+#ifdef DEBUG
             cout << "Fail to create pthread#" << pin << endl;
+#endif
             return;
         }
+#ifdef DEBUG
         cout << "Success to create pthread#" << pin << endl;
+#endif
         thread_exists[pin] = true;
     }
 }
 
 void unset_soft_pwm(int pin)
 {
+#ifdef DEBUG
     cout << "Try to kill pthread#" << pin << endl;
+#endif
 
     PWM* pwm_ptr = &(pwms[pin]);
     pwm_ptr->pin = -1;
