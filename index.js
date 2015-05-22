@@ -29,6 +29,15 @@ API.usleep = Native.usleep;
 API.delayMicroseconds = Native.usleep;
 
 /**
+ * Suspend execution for given miliseconds
+ *
+ * @param {Int} ms - time for suspending
+ */
+API.delay = function(ms) {
+    API.delayMicroseconds(ms * 1000);
+};
+
+/**
  * pulseIn
  *
  * @param {Int} pin - Pin ID
