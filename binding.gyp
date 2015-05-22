@@ -4,7 +4,7 @@
         {
             "target_name" : "yapcduino",
             "sources" : [
-                "./src/yapcduino.cc",
+                "./src/yapcduino.cpp",
                 "./src/softpwm.c",
                 "./src/arduino/wiring.c",
                 "./src/arduino/wiring_digital.c",

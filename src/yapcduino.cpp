@@ -75,7 +75,7 @@ Handle<Value> setSoftPWMSync(const Arguments& args) {
     return scope.Close(Undefined());
 }
 
-Handle<Value> getSoftPWMLoopsCount(const Arguments& args) {
+Handle<Value> getSoftPWMLoopCount(const Arguments& args) {
     HandleScope scope;
 
     int pin = args[0]->NumberValue();
@@ -119,8 +119,8 @@ void Init(Handle<Object> exports)
     exports->Set(v8::String::NewSymbol("unsetSoftPWM"),
                  FunctionTemplate::New(unsetSoftPWM)->GetFunction());
 
-    exports->Set(v8::String::NewSymbol("getSoftPWMLoopsCount"),
-                 FunctionTemplate::New(getSoftPWMLoopsCount)->GetFunction());
+    exports->Set(v8::String::NewSymbol("getSoftPWMLoopCount"),
+                 FunctionTemplate::New(getSoftPWMLoopCount)->GetFunction());
 }
 
 NODE_MODULE(yapcduino, Init)

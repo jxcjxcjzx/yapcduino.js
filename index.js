@@ -51,5 +51,7 @@ API.pulseIn = function(pin, value, timeout) {
     Native.pulseIn(pin, value, timeout);
 };
 
+API.SoftPWM = require('./lib/softpwm');
+
 
 module.exports = API;
