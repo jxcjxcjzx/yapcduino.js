@@ -1,3 +1,6 @@
+// Copyright (c) 2015 Zeno Zeng, licensed under LGPL
+// Special thanks to Senorsen Zhang
+
 #include <iostream>
 #include <pthread.h>
 #include <signal.h>
@@ -12,9 +15,7 @@ struct PWM
     int pin;
 };
 
-void *fn(void* _pwm);
-
-void *fn(void* _pwm)
+void *set_soft_pwm(void* _pwm)
 {
     PWM* pwmptr = (PWM *) _pwm;
     PWM pwm;
@@ -25,25 +26,46 @@ void *fn(void* _pwm)
         pin = pwm.pin;
         highus = pwm.highus;
         lowus = pwm.lowus;
-        cout << pin << "," << highus << "," << lowus << endl;
+        // digitalwrite 1
+        //usleep(highus);
+        // digitalwrite 0
+        // usleep(lowus);
+        cout << endl;
+        cout << "pin: " << pin << ", high: " << highus << ", low:" << lowus << endl;
     }
 }
 
-int main() {
-    PWM pwm;
-    pwm.highus = 100;
-    pwm.lowus = 200;
-    pwm.pin = 1;
+pthread_t threads[18];
+PWM pwms[18];
 
-    pthread_t thread1;
-    pthread_create(&thread1,
+void set_soft_pwm(int pin, int highus, int lowus) {
+    PWM* pwm_ptr = &(pwms[pin]);
+    (*pwm_ptr).pin = pin;
+    (*pwm_ptr).highus = highus;
+    (*pwm_ptr).lowus = lowus;
+
+    pthread_t* thread_ptr = &(threads[pin]);
+    pthread_create(thread_ptr,
                    NULL,
-                   fn,
-                   (void*) &pwm);
-    usleep(100);
-    pwm.highus = 200;
-    pwm.lowus = 400;
-    usleep(100);
-    pthread_kill(thread1, 9);
+                   set_soft_pwm,
+                   (void*) pwm_ptr);
+}
+
+void unset_soft_pwm(int pin) {
+    pthread_kill(threads[pin], 9);
+}
+
+int main() {
+    set_soft_pwm(1, 100, 200);
+    usleep(200);
+
+    // set_soft_pwm(2, 100, 200);
+    set_soft_pwm(1, 200, 400);
+    usleep(200);
+
+    // set_soft_pwm(1, 200, 400);
+    // set_soft_pwm(2, 200, 400);
+    unset_soft_pwm(1);
+
     return 0;
 }
