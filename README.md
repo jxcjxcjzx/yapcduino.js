@@ -21,7 +21,17 @@ p.pinMode(10, p.INPUT_PU); // Set pin #10 to input with pull-up
 var ret = p.digitalRead(10);
 ```
 
-### Output
+```javascript
+p.pinMode(0, p.OUTPUT);
+p.digitalWrite(0, 1);
+p.digitalWrite(0, 0);
+``
+
+```javascript
+// Note: only 3, 5, 6, 9, 10, and 11 are PWM pins
+p.analogWrite(3, 16);
+var ret = p.analogRead(3);
+```
 
 ### (Sync) Delay
 
@@ -29,6 +39,30 @@ var ret = p.digitalRead(10);
 p.delay(ms);
 p.delayMicroseconds(us);
 ```
+
+### SoftPWM (Powered by pthread)
+
+Use your GPIO pin to fake PWM pin using CPU.
+
+```javascript
+var pin = 0;
+var pwm = new SoftPWM(pin);
+var dutyCycle = 0.5;
+pwm.write(dutyCycle, {frequency: 980, loops: Infinity}); // run the PWM forever
+// when something happens
+pwm.detach(); // stop and unset this.pin
+```
+
+```javascript
+var pin = 0;
+var pwm = new SoftPWM(pin);
+var dutyCycle = 0.5;
+var us = 20 * 1000; // 500HZ
+pwm.write(dutyCycle, {period: us, loops: 1000});
+var count = pwm.getLoopCount(); // Get count of loops of the pin since last write (useful for stepping motor)
+```
+
+See the detail jsdoc in: https://github.com/zenozeng/yapcduino.js/blob/master/lib/softpwm.js
 
 ## Source
 
