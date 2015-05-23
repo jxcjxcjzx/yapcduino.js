@@ -22,24 +22,6 @@ Handle<Value> pulseIn(const Arguments& args) {
     return scope.Close(num);
 }
 
-Handle<Value> digitalPulse(const Arguments& args) {
-    HandleScope scope;
-
-    int pin = args[0]->NumberValue();
-    int pulse = args[1]->NumberValue(); // pulse in us
-    int period = args[2]->NumberValue(); // period in us
-    int loops = args[3]->NumberValue(); // loop how many times
-
-    for (int i = 0; i < loops; i++) {
-        digitalWrite(pin, HIGH);
-        usleep(pulse);
-        digitalWrite(pin, LOW);
-        usleep(period - pulse);
-    }
-
-    return scope.Close(Undefined());
-}
-
 Handle<Value> usleep(const Arguments& args) {
     HandleScope scope;
 
@@ -103,9 +85,6 @@ void Init(Handle<Object> exports)
 
     exports->Set(v8::String::NewSymbol("pulseIn"),
                  FunctionTemplate::New(pulseIn)->GetFunction());
-
-    exports->Set(v8::String::NewSymbol("digitalPulse"),
-                 FunctionTemplate::New(digitalPulse)->GetFunction());
 
     exports->Set(v8::String::NewSymbol("usleep"),
                  FunctionTemplate::New(usleep)->GetFunction());
