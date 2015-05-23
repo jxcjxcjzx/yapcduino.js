@@ -49,8 +49,9 @@ var pin = 0;
 var pwm = new SoftPWM(pin);
 var dutyCycle = 0.5;
 pwm.write(dutyCycle, {frequency: 980, loops: Infinity}); // run the PWM forever
-// when something happens
-pwm.detach(); // stop and unset this.pin
+// everything done? stop and unset this.pin
+// Note: after detach, you have to attach(pin) before call write or read
+pwm.detach();
 ```
 
 ```javascript
@@ -59,7 +60,8 @@ var pwm = new SoftPWM(pin);
 var dutyCycle = 0.5;
 var us = 20 * 1000; // 500HZ
 pwm.write(dutyCycle, {period: us, loops: 1000});
-var count = pwm.getLoopCount(); // Get count of loops of the pin since last write (useful for stepping motor)
+// Get count of loops of the pin since last write (useful for stepping motor)
+var count = pwm.getLoopCount();
 ```
 
 See the detail jsdoc in: https://github.com/zenozeng/yapcduino.js/blob/master/lib/softpwm.js
