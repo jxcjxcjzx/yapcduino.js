@@ -8,14 +8,26 @@ Yet another nodejs library for pcduino (extends jheising's node.pcduino but prov
 npm install yapcduino --save
 ```
 
-## API
+## Usage
+
+
+### Basic Features
 
 ```javascript
 var p = require('yapcduino');
 p.PIN_COUNT // GPIO pin count
 p.pinMode(10, p.INPUT); // Set pin #10 to input
 p.pinMode(10, p.INPUT_PU); // Set pin #10 to input with pull-up
-p.setPulse(pin, pulse, period, loops); // pulse and period are in us
+var ret = p.digitalRead(10);
+```
+
+### Output
+
+### (Sync) Delay
+
+```javascript
+p.delay(ms);
+p.delayMicroseconds(us);
 ```
 
 ## Source
