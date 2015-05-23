@@ -3,14 +3,12 @@
 
 #include "./softpwm.h"
 
+#include "./arduino/Arduino.h"
+
 #include <unistd.h>
 #include <pthread.h>
 #include <signal.h>
-#include "./arduino/Arduino.h"
-
-pthread_t threads[18];
-PWM pwms[18];
-bool thread_exists[18];
+#include <stdbool.h>
 
 struct PWM
 {
@@ -20,14 +18,20 @@ struct PWM
     int loops_to_live;
 };
 
-void *set_soft_pwm(void* _pwm)
+typedef struct PWM PWM;
+
+pthread_t threads[18];
+PWM pwms[18];
+bool thread_exists[18];
+
+void *set_soft_pwm_for_n_loops(void* _pwm)
 {
     PWM* pwm_ptr = (PWM *) _pwm;
 
     while (pwm_ptr->loops_to_live-- > 0) {
-        digitalWrite(pin, HIGH);
+        digitalWrite(pwm_ptr->pin, HIGH);
         usleep(pwm_ptr->highus);
-        digitalWrite(pin, LOW);
+        digitalWrite(pwm_ptr->pin, LOW);
         usleep(pwm_ptr->lowus);
     }
 }
@@ -37,7 +41,7 @@ void *set_soft_pwm(void* _pwm)
 int get_soft_pwm_loop_count(int pin, int original_loops_to_live) {
     original_loops_to_live = original_loops_to_live < 0 ? 2147483647 : original_loops_to_live;
     PWM* pwm_ptr = &(pwms[pin]);
-    return original_loops_to_live - pwm_ptr->loops_to_live;
+    return (original_loops_to_live - pwm_ptr->loops_to_live);
 }
 
 // run soft pwm in thread#pin forever(loops = -1) or for n loops (async)
@@ -54,7 +58,7 @@ void set_soft_pwm(int pin, int highus, int lowus, int loops_to_live) {
         return;
     }
     pthread_t* thread_ptr = &(threads[pin]);
-    if (0 != pthread_create(thread_ptr, NULL, set_soft_pwm, (void*) pwm_ptr)) {
+    if (0 != pthread_create(thread_ptr, NULL, set_soft_pwm_for_n_loops, (void*) pwm_ptr)) {
         return; // error occurs
     }
     thread_exists[pin] = true;
