@@ -43,6 +43,7 @@ p.delayMicroseconds(us);
 ### SoftPWM (Powered by pthread)
 
 Use your GPIO pin to fake PWM pin using CPU.
+Improtant: SoftPWM may not be stable enough for your servo, which expects a pulse over a very tight range. Use SoftPWM in servo may cause positions jumps.
 
 ```javascript
 var pin = 0;
