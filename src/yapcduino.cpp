@@ -178,13 +178,70 @@ NAN_METHOD(getSoftPWMLoopCount) {
  **********************************/
 
 
-void yapcduino_Init(Local<Object> exports)
-{
-
+void yapcduino_Init(Handle<Object> exports) {
     // important! init is defined in wiring.c
     // must be called before using pins
     init();
 
+    exports->Set(NanNew<String>("pinMode"),
+                 NanNew<FunctionTemplate>(pinMode)->GetFunction());
+
+    exports->Set(NanNew<String>("digitalWrite"),
+                 NanNew<FunctionTemplate>(digitalWrite)->GetFunction());
+
+    exports->Set(NanNew<String>("digitalRead"),
+                 NanNew<FunctionTemplate>(digitalRead)->GetFunction());
+
+    exports->Set(NanNew<String>("analogReference"),
+                 NanNew<FunctionTemplate>(analogReference)->GetFunction());
+
+    exports->Set(NanNew<String>("analogWrite"),
+                 NanNew<FunctionTemplate>(analogWrite)->GetFunction());
+
+    exports->Set(NanNew<String>("analogReference"),
+                 NanNew<FunctionTemplate>(analogReference)->GetFunction());
+
+    exports->Set(NanNew<String>("pwmfreq_set"),
+                 NanNew<FunctionTemplate>(pwmfreq_set)->GetFunction());
+
+    exports->Set(NanNew<String>("millis"),
+                 NanNew<FunctionTemplate>(millis)->GetFunction());
+
+    exports->Set(NanNew<String>("micros"),
+                 NanNew<FunctionTemplate>(micros)->GetFunction());
+
+    exports->Set(NanNew<String>("delay"),
+                 NanNew<FunctionTemplate>(delay)->GetFunction());
+
+    exports->Set(NanNew<String>("delayMicroseconds"),
+                 NanNew<FunctionTemplate>(delayMicroseconds)->GetFunction());
+
+    exports->Set(NanNew<String>("delaySched"),
+                 NanNew<FunctionTemplate>(delaySched)->GetFunction());
+
+    exports->Set(NanNew<String>("delayMicrosecondsSched"),
+                 NanNew<FunctionTemplate>(delayMicrosecondsSched)->GetFunction());
+
+    exports->Set(NanNew<String>("pulseIn"),
+                 NanNew<FunctionTemplate>(pulseIn)->GetFunction());
+
+    exports->Set(NanNew<String>("shiftOut"),
+                 NanNew<FunctionTemplate>(shiftOut)->GetFunction());
+
+    exports->Set(NanNew<String>("shiftIn"),
+                 NanNew<FunctionTemplate>(shiftIn)->GetFunction());
+
+    exports->Set(NanNew<String>("setSoftPWM"),
+                 NanNew<FunctionTemplate>(setSoftPWM)->GetFunction());
+
+    exports->Set(NanNew<String>("setSoftPWMSync"),
+                 NanNew<FunctionTemplate>(setSoftPWMSync)->GetFunction());
+
+    exports->Set(NanNew<String>("unsetSoftPWM"),
+                 NanNew<FunctionTemplate>(unsetSoftPWM)->GetFunction());
+
+    exports->Set(NanNew<String>("getSoftPWMLoopCount"),
+                 NanNew<FunctionTemplate>(getSoftPWMLoopCount)->GetFunction());
 }
 
 NODE_MODULE(yapcduino, yapcduino_Init)
