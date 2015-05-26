@@ -1,6 +1,6 @@
 # yapcduino.js
 
-Yet another nodejs library for pcduino (extends jheising's node.pcduino but provide simple API and some extra function)
+Yet another nodejs library for pcduino built for modern nodejs and provide more arduino functions and wrapper.
 
 Yapcduino should work in Node.js 0.10 and 0.12 as well as io.js.
 
@@ -132,3 +132,32 @@ You can use digitalPulse to do it once. Or use startDigitalPulse
 
 - Zeno Zeng \<zenoofzeng@gmail.com\>
 - Senorsen \<sen@senorsen.com\>
+
+## Changelog
+
+### v0.8.0
+
+- Using nan to rewrite bindings, now should work in Node.js 0.10 and 0.12 as well as io.js.
+
+- Add more bindings
+
+    ```c
+    void pinMode(uint8_t, uint8_t);
+    void digitalWrite(uint8_t, uint8_t);
+    int digitalRead(uint8_t);
+    int analogRead(uint8_t);
+    void analogReference(uint8_t mode);
+    void analogWrite(uint8_t, int);
+    int pwmfreq_set(uint8_t pin, unsigned int freq);
+    unsigned long millis(void);
+    unsigned long micros(void);
+    void delay(unsigned long);
+    void delayMicroseconds(unsigned int us);
+    void delaySched(unsigned long);
+    void delayMicrosecondsSched(unsigned int us);
+    unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
+    void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
+    uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
+    ```
+
+- No longer requires node-pcduino now
