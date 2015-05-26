@@ -1,4 +1,3 @@
-#include <unistd.h>
 #include "./yapcduino.h"
 #include <nan.h>
 
