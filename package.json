@@ -1,6 +1,6 @@
 {
   "name": "yapcduino",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Yet another nodejs library for pcduino (extends jheising's node.pcduino but provide simple API and some extra function).",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,8 @@
     "url": "https://github.com/zenozeng/yapcduino.js.git"
   },
   "keywords": [
-    "pcduino"
+      "pcduino",
+      "softpwm"
   ],
   "author": "Zeno Zeng",
   "license": "LGPL",
