@@ -1,13 +1,8 @@
-#include <node.h>
-#include "./arduino/Arduino.h"
 #include <unistd.h>
-#include "./softpwm.h"
+#include "./yapcduino.h"
 #include <nan.h>
 
-using v8::FunctionTemplate;
-using v8::Handle;
-using v8::Object;
-using v8::String;
+using namespace v8;
 
 // void pinMode(uint8_t, uint8_t);
 NAN_METHOD(pinMode) {
@@ -27,13 +22,6 @@ NAN_METHOD(digitalWrite) {
 NAN_METHOD(digitalRead) {
     NanScope();
     int ret = digitalRead(args[0]->NumberValue());
-    NanReturnValue(NanNew<Number>(ret));
-}
-
-// int analogRead(uint8_t);
-NAN_METHOD(analogReference) {
-    NanScope();
-    int ret = analogRead(args[0]->NumberValue());
     NanReturnValue(NanNew<Number>(ret));
 }
 
@@ -191,9 +179,6 @@ void yapcduino_Init(Handle<Object> exports) {
 
     exports->Set(NanNew<String>("digitalRead"),
                  NanNew<FunctionTemplate>(digitalRead)->GetFunction());
-
-    exports->Set(NanNew<String>("analogReference"),
-                 NanNew<FunctionTemplate>(analogReference)->GetFunction());
 
     exports->Set(NanNew<String>("analogWrite"),
                  NanNew<FunctionTemplate>(analogWrite)->GetFunction());

@@ -14,7 +14,7 @@
             "include_dirs" : [
                 "<!(node -e \"require('nan')\")"
             ],
-            "cflags": ["-Wall", "-O2"],
+            "cflags": ["-w", "-O2"],
         }
     ]
 }
