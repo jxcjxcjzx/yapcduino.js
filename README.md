@@ -126,6 +126,16 @@ The src/arduino comes from https://github.com/pcduino/c_environment
 
 ## Changelog
 
+### v0.9.0
+
+- Option for Global Mode
+
+    ```javascript
+    require('yapcduino')({global: true});
+    pinMode(0, OUTPUT);
+    digitalWrite(0, HIGH);
+    ```
+
 ### v0.8.1
 
 - Fix constant reference
