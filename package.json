@@ -19,6 +19,6 @@
     "url": "https://github.com/zenozeng/yapcduino.js/issues"
   },
   "dependencies": {
-    "pcduino": "0.0.6"
+    "pcduino": "0.0.7"
   }
 }
