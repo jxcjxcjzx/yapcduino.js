@@ -7,8 +7,6 @@ int get_soft_pwm_loop_count(int pin, int original_loops_to_live);
 // Arduino
 void init(void); // must be called before using pin
 
-void pabort(const char *s);
-
 void hw_pinMode(unsigned char, unsigned char);
 void pinMode(unsigned char, unsigned char);
 void digitalWrite(unsigned char, unsigned char);
