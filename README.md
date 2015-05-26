@@ -36,7 +36,7 @@ var ret = p.analogRead(3);
 ### Global Mode
 
 Sometimes it's silly to write all this functions with a prefix.
-Since yapcduino@0.9.0, we introduce global mode.
+Since yapcduino@0.9.0, we have introduced global mode.
 
 ```javascript
 require('yapcduino')({global: true});
