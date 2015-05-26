@@ -2,6 +2,8 @@
 
 Yet another nodejs library for pcduino (extends jheising's node.pcduino but provide simple API and some extra function)
 
+Yapcduino should work in Node.js 0.10 and 0.12 as well as io.js.
+
 ## Install
 
 ```bash
