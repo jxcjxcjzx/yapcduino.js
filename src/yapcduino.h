@@ -1,3 +1,11 @@
+#ifndef _YAPCUDINO_H_
+#define _YAPCUDINO_H_
+
+#ifdef __cplusplus
+extern "C"{
+#endif
+
+
 // softpwm
 void set_soft_pwm(int pin, int highus, int lowus, int loops_to_live);
 void set_soft_pwm_sync(int pin, int highus, int lowus, int loops_to_live);
@@ -29,3 +37,9 @@ unsigned long pulseIn(unsigned char pin, unsigned char state, unsigned long time
 
 void shiftOut(unsigned char dataPin, unsigned char clockPin, unsigned char bitOrder, unsigned char val);
 unsigned char shiftIn(unsigned char dataPin, unsigned char clockPin, unsigned char bitOrder);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
+#endif

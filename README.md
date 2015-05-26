@@ -126,7 +126,7 @@ The src/arduino comes from https://github.com/pcduino/c_environment
 
 - Using nan to rewrite bindings, now should work in Node.js 0.10 and 0.12 as well as io.js.
 
-- Add more bindings
+- Add more bindings (now the following are supported)
 
     ```c
     void pinMode(uint8_t, uint8_t);
@@ -146,6 +146,26 @@ The src/arduino comes from https://github.com/pcduino/c_environment
     void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
     uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
     ```
+
+- Add constants (now the following are supported)
+
+```javascript
+module.exports = {
+    HIGH: 0x1,
+    LOW: 0x0,
+
+    INPUT: 0x0,
+    OUTPUT: 0x1,
+    INPUT_PULLUP: 0x2,
+
+    LSBFIRST: 0,
+    MSBFIRST: 1,
+
+    CHANGE: 1,
+    FALLING: 2,
+    RISING: 3
+};
+```
 
 - No longer requires node-pcduino now
 
