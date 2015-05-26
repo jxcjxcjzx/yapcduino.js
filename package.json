@@ -18,7 +18,9 @@
   "bugs": {
     "url": "https://github.com/zenozeng/yapcduino.js/issues"
   },
-  "dependencies": {
-    "pcduino": "Senorsen/node.pcduino"
+  "dependencies": {},
+  "devDependencies": {
+    "cbind": "0.0.8",
+    "nan": "^1.8.4"
   }
 }

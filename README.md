@@ -67,6 +67,18 @@ var count = pwm.getLoopCount();
 
 See the detail jsdoc in: https://github.com/zenozeng/yapcduino.js/blob/master/lib/softpwm.js
 
+### Constants
+
+```javascript
+{
+    HIGH: 0x1,
+    LOW: 0x0,
+    INPUT: 0x0,
+    OUTPUT: 0x1,
+    INPUT_PULLUP: 0x2
+};
+```
+
 ## Source
 
 The src/arduino comes from https://github.com/pcduino/c_environment
