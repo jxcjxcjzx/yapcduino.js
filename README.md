@@ -17,7 +17,7 @@ npm install yapcduino --save
 ```javascript
 var p = require('yapcduino');
 p.pinMode(10, p.INPUT); // Set pin #10 to input
-p.pinMode(10, p.INPUT_PU); // Set pin #10 to input with pull-up
+p.pinMode(10, p.INPUT_PULLUP); // Set pin #10 to input with pull-up
 var ret = p.digitalRead(10);
 ```
 
