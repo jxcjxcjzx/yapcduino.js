@@ -130,86 +130,53 @@ NAN_METHOD(shiftIn) {
 }
 
 
+/***********************************
+ *
+ * Soft PWM
+ *
+ **********************************/
 
-#ifdef __NODE_V0_11__
-static void setSoftPWM(const FunctionCallbackInfo<Value>& args) {
-    Isolate* isolate = Isolate::GetCurrent();
-    HandleScope scope(isolate);
-#else
-Handle<Value> setSoftPWM(const Arguments& args) {
-    HandleScope scope(isolate);
-#endif
-    int pin = args[0]->NumberValue();
-    int highus = args[1]->NumberValue();
-    int lowus = args[2]->NumberValue();
-    int loops_to_live = args[3]->NumberValue();
-
-    set_soft_pwm(pin, highus, lowus, loops_to_live);
-
-#ifndef __NODE_V0_11__
-    return scope.Close(Undefined());
-#endif
+// void set_soft_pwm(int pin, int highus, int lowus, int loops_to_live);
+NAN_METHOD(setSoftPWM) {
+    NanScope();
+    set_soft_pwm(args[0]->NumberValue(),
+                 args[1]->NumberValue(),
+                 args[2]->NumberValue(),
+                 args[3]->NumberValue());
+    NanReturnUndefined();
 }
 
-#ifdef __NODE_V0_11__
-static void setSoftPWMSync(const FunctionCallbackInfo<Value>& args) {
-    Isolate* isolate = Isolate::GetCurrent();
-    HandleScope scope(isolate);
-#else
-Handle<Value> setSoftPWMSync(const Arguments& args) {
-    HandleScope scope(isolate);
-#endif
-    int pin = args[0]->NumberValue();
-    int highus = args[1]->NumberValue();
-    int lowus = args[2]->NumberValue();
-    int loops_to_live = args[3]->NumberValue();
-
-    set_soft_pwm_sync(pin, highus, lowus, loops_to_live);
-
-#ifndef __NODE_V0_11__
-    return scope.Close(Undefined());
-#endif
+// void set_soft_pwm_sync(int pin, int highus, int lowus, int loops_to_live);
+NAN_METHOD(setSoftPWMSync) {
+    NanScope();
+    set_soft_pwm_sync(args[0]->NumberValue(),
+                      args[1]->NumberValue(),
+                      args[2]->NumberValue(),
+                      args[3]->NumberValue());
+    NanReturnUndefined();
 }
 
-#ifdef __NODE_V0_11__
-static void getSoftPWMLoopCount(const FunctionCallbackInfo<Value>& args) {
-    Isolate* isolate = Isolate::GetCurrent();
-    HandleScope scope(isolate);
-#else
-Handle<Value> getSoftPWMLoopCount(const Arguments& args) {
-    HandleScope scope(isolate);
-#endif
-    int pin = args[0]->NumberValue();
-    int original_loops_to_live = args[1]->NumberValue();
-
-    int count = get_soft_pwm_loop_count(pin, original_loops_to_live);
-
-#ifdef __NODE_V0_11__
-    Local<Number> num = Number::New(isolate, count);
-    args.GetReturnValue().Set(num);
-#else
-    Local<Number> num = Number::New(count);
-    return scope.Close(num);
-#endif
+// void unset_soft_pwm(int pin);
+NAN_METHOD(unsetSoftPWM) {
+    NanScope();
+    unset_soft_pwm(args[0]->NumberValue());
+    NanReturnUndefined();
 }
 
-#ifdef __NODE_V0_11__
-static void unsetSoftPWM(const FunctionCallbackInfo<Value>& args) {
-    Isolate* isolate = Isolate::GetCurrent();
-    HandleScope scope(isolate);
-#else
-Handle<Value> unsetSoftPWM(const Arguments& args) {
-    HandleScope scope(isolate);
-#endif
-
-    int pin = args[0]->NumberValue();
-
-    unset_soft_pwm(pin);
-
-#ifndef __NODE_V0_11__
-    return scope.Close(Undefined());
-#endif
+// int get_soft_pwm_loop_count(int pin, int original_loops_to_live);
+NAN_METHOD(getSoftPWMLoopCount) {
+    NanScope();
+    int ret = get_soft_pwm_loop_count(args[0]->NumberValue(),
+                                      args[1]->NumberValue());
+    NanReturnValue(NanNew<Number>(ret));
 }
+
+/***********************************
+ *
+ * INIT
+ *
+ **********************************/
+
 
 void yapcduino_Init(Local<Object> exports)
 {
@@ -217,7 +184,6 @@ void yapcduino_Init(Local<Object> exports)
     // important! init is defined in wiring.c
     // must be called before using pins
     init();
-
 
 }
 
