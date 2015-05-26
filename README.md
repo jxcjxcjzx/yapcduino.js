@@ -23,9 +23,9 @@ var ret = p.digitalRead(10);
 
 ```javascript
 p.pinMode(0, p.OUTPUT);
-p.digitalWrite(0, 1);
-p.digitalWrite(0, 0);
-``
+p.digitalWrite(0, p.HIGH);
+p.digitalWrite(0, p.LOW);
+```
 
 ```javascript
 // Note: only 3, 5, 6, 9, 10, and 11 are PWM pins
@@ -34,6 +34,15 @@ var ret = p.analogRead(3);
 ```
 
 ### Global Mode
+
+Sometimes it's silly to write all this functions with a prefix.
+Since yapcduino@0.9.0, we introduce global mode.
+
+```javascript
+require('yapcduino')({global: true});
+pinMode(0, OUTPUT);
+digitalWrite(0, HIGH);
+```
 
 ### Arduino Binding
 

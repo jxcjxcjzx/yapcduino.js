@@ -1,16 +1,25 @@
 var Native = require('./build/Release/yapcduino');
 var C = require('./lib/constant');
 
-var API = {};
+function Pcduino(options) {
+    options = options || {};
+    if (options.global) {
+        Object.keys(Pcduino).forEach(function(k) {
+            global[k] = Pcduino[k];
+        });
+    }
+};
+
+// Load APIs (static)
 
 Object.keys(Native).forEach(function(method) {
-    API[method] = Native[method];
+    Pcduino[method] = Native[method];
 });
 
 Object.keys(C).forEach(function(c) {
-    API[c] = C[c];
+    Pcduino[c] = C[c];
 });
 
-API.SoftPWM = require('./lib/softpwm');
+Pcduino.SoftPWM = require('./lib/softpwm');
 
-module.exports = API;
+module.exports = Pcduino;
