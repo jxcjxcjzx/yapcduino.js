@@ -1,5 +1,4 @@
 {
-    "cflags": ["-Wall", "-O2", "--no-undefined"],
     "libraries": ["-lpthread"],
     "targets": [
         {
@@ -11,7 +10,11 @@
                 "./src/arduino/wiring_digital.c",
                 "./src/arduino/wiring_pulse.c",
                 "./src/arduino/platform.c"
-            ]
+            ],
+            "include_dirs" : [
+                "<!(node -e \"require('nan')\")"
+            ],
+            "cflags": ["-Wall", "-O2"],
         }
     ]
 }

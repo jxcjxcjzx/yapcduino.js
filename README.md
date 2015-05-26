@@ -42,6 +42,48 @@ p.delay(ms);
 p.delayMicroseconds(us);
 ```
 
+### Arduino Binding
+
+The following functions are provided using Node.js's Nan binding.
+And can be called like `pcduino.pinMode(0, pcduino.OUTPUT)`
+
+```c
+void pinMode(uint8_t, uint8_t);
+void digitalWrite(uint8_t, uint8_t);
+int digitalRead(uint8_t);
+int analogRead(uint8_t);
+void analogReference(uint8_t mode);
+void analogWrite(uint8_t, int);
+int pwmfreq_set(uint8_t pin, unsigned int freq);
+unsigned long millis(void);
+unsigned long micros(void);
+void delay(unsigned long);
+void delayMicroseconds(unsigned int us);
+void delaySched(unsigned long);
+void delayMicrosecondsSched(unsigned int us);
+unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
+void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
+uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
+```
+
+### Constants
+
+```
+HIGH: 0x1,
+LOW: 0x0,
+
+INPUT: 0x0,
+OUTPUT: 0x1,
+INPUT_PULLUP: 0x2,
+
+LSBFIRST: 0,
+MSBFIRST: 1,
+
+CHANGE: 1,
+FALLING: 2,
+RISING: 3
+```
+
 ### SoftPWM (Powered by pthread)
 
 Use your GPIO pin to fake PWM pin using CPU.

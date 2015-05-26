@@ -1,55 +1,135 @@
 #include <node.h>
-#include <node_version.h>
-#include <uv.h>
 #include "./arduino/Arduino.h"
 #include <unistd.h>
-#include <pthread.h>
 #include "./softpwm.h"
-#include "common.h"
+#include <nan.h>
 
-using namespace v8;
-using namespace node;
+using v8::FunctionTemplate;
+using v8::Handle;
+using v8::Object;
+using v8::String;
 
+// void pinMode(uint8_t, uint8_t);
+NAN_METHOD(pinMode) {
+    NanScope();
+    pinMode(args[0]->NumberValue(), args[1]->NumberValue());
+    NanReturnUndefined();
+}
+
+// void digitalWrite(uint8_t, uint8_t);
+NAN_METHOD(digitalWrite) {
+    NanScope();
+    digitalWrite(args[0]->NumberValue(), args[1]->NumberValue());
+    NanReturnUndefined();
+}
+
+// int digitalRead(uint8_t);
+NAN_METHOD(digitalRead) {
+    NanScope();
+    int ret = digitalRead(args[0]->NumberValue());
+    NanReturnValue(NanNew<Number>(ret));
+}
+
+// int analogRead(uint8_t);
+NAN_METHOD(analogReference) {
+    NanScope();
+    int ret = analogRead(args[0]->NumberValue());
+    NanReturnValue(NanNew<Number>(ret));
+}
+
+// void analogWrite(uint8_t, int);
+NAN_METHOD(analogWrite) {
+    NanScope();
+    analogWrite(args[0]->NumberValue(), args[1]->NumberValue());
+    NanReturnUndefined();
+}
+
+
+// void analogReference(uint8_t mode);
+NAN_METHOD(analogReference) {
+    NanScope();
+    analogReference(args[0]->NumberValue());
+    NanReturnUndefined();
+}
+
+// int pwmfreq_set(uint8_t pin, unsigned int freq);
+NAN_METHOD(pwmfreq_set) {
+    NanScope();
+    int ret = pwmfreq_set(args[0]->NumberValue(), args[1]->NumberValue());
+    NanReturnValue(NanNew<Number>(ret));
+}
+
+// unsigned long millis(void);
+NAN_METHOD(millis) {
+    NanScope();
+    NanReturnValue(NanNew<Number>(millis()));
+}
+
+// unsigned long micros(void);
+NAN_METHOD(micros) {
+    NanScope();
+    NanReturnValue(NanNew<Number>(micros()));
+}
+
+// void delay(unsigned long);
+NAN_METHOD(delay) {
+    NanScope();
+    delay(args[0]->NumberValue());
+    NanReturnUndefined();
+}
+
+// void delayMicroseconds(unsigned int us);
+NAN_METHOD(delayMicroseconds) {
+    NanScope();
+    delay(args[0]->NumberValue());
+    NanReturnUndefined();
+}
+
+// void delaySched(unsigned long);
+NAN_METHOD(delaySched) {
+    NanScope();
+    delaySched(args[0]->NumberValue());
+    NanReturnUndefined();
+}
+
+// void delayMicrosecondsSched(unsigned int us);
+NAN_METHOD(delayMicrosecondsSched) {
+    NanScope();
+    delayMicrosecondsSched(args[0]->NumberValue());
+    NanReturnUndefined();
+}
+
+// unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
 // http://www.arduino.cc/en/Tutorial/Ping
 // http://www.arduino.cc/en/Reference/PulseIn
-#ifdef __NODE_V0_11__
-static void pulseIn(const FunctionCallbackInfo<Value>& args) {
-    Isolate* isolate = Isolate::GetCurrent();
-    HandleScope scope(isolate);
-#else
-Handle<Value> pulseIn(const Arguments& args) {
-    HandleScope scope;
-#endif
-    int pin = args[0]->NumberValue();
-    int value = args[1]->NumberValue(); // type of pulse to read: either HIGH or LOW (int)
-    int timeout = args[2]->NumberValue();
-
-    int us = pulseIn(pin, value, timeout); // the length of the pulse in us
-
-#ifdef __NODE_V0_11__
-    Local<Number> num = Number::New(isolate, us);
-    args.GetReturnValue().Set(num);
-#else
-    Local<Number> num = Number::New(us);
-    return scope.Close(num);
-#endif
+NAN_METHOD(pulseIn) {
+    NanScope();
+    unsigned long ret = pulseIn(args[0]->NumberValue(),
+                                args[1]->NumberValue(),
+                                args[2]->NumberValue());
+    NanReturnValue(NanNew<Number>(ret));
 }
 
-#ifdef __NODE_V0_11__
-static void usleep(const FunctionCallbackInfo<Value>& args) {
-    Isolate* isolate = Isolate::GetCurrent();
-    HandleScope scope(isolate);
-#else
-Handle<Value> usleep(const Arguments& args) {
-    HandleScope scope;
-#endif
-    int us = args[0]->NumberValue();
-    usleep(us);
-
-#ifndef __NODE_V0_11__
-    return scope.Close(Undefined());
-#endif
+// void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
+NAN_METHOD(shiftOut) {
+    NanScope();
+    shiftOut(args[0]->NumberValue(),
+             args[1]->NumberValue(),
+             args[2]->NumberValue(),
+             args[3]->NumberValue());
+    NanReturnUndefined();
 }
+
+// uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
+NAN_METHOD(shiftIn) {
+    NanScope();
+    uint8_t ret = shiftIn(args[0]->NumberValue(),
+                          args[1]->NumberValue(),
+                          args[2]->NumberValue());
+    NanReturnUndefined();
+}
+
+
 
 #ifdef __NODE_V0_11__
 static void setSoftPWM(const FunctionCallbackInfo<Value>& args) {
@@ -133,57 +213,11 @@ Handle<Value> unsetSoftPWM(const Arguments& args) {
 
 void yapcduino_Init(Local<Object> exports)
 {
-    Isolate* isolate = Isolate::GetCurrent();
 
-    init(); // important! init is defined in wiring.c
+    // important! init is defined in wiring.c
+    // must be called before using pins
+    init();
 
-#ifdef __NODE_V0_11__
-    exports->Set(v8::String::NewFromUtf8(isolate, "pulseIn"),
-                 FunctionTemplate::New(isolate, pulseIn)->GetFunction());
-#else
-    exports->Set(v8::String::NewSymbol("pulseIn"),
-                 FunctionTemplate::New(pulseIn)->GetFunction());
-#endif
-
-#ifdef __NODE_V0_11__
-    exports->Set(v8::String::NewFromUtf8(isolate, "usleep"),
-                 FunctionTemplate::New(isolate, pulseIn)->GetFunction());
-#else
-    exports->Set(v8::String::NewSymbol("usleep"),
-                 FunctionTemplate::New(isolate, usleep)->GetFunction());
-#endif
-
-#ifdef __NODE_V0_11__
-    exports->Set(v8::String::NewFromUtf8(isolate, "setSoftPWM"),
-                 FunctionTemplate::New(isolate, pulseIn)->GetFunction());
-#else
-    exports->Set(v8::String::NewSymbol("setSoftPWM"),
-                 FunctionTemplate::New(setSoftPWM)->GetFunction());
-#endif
-
-#ifdef __NODE_V0_11__
-    exports->Set(v8::String::NewFromUtf8(isolate, "setSoftPWMSync"),
-                 FunctionTemplate::New(isolate, pulseIn)->GetFunction());
-#else
-    exports->Set(v8::String::NewSymbol("setSoftPWMSync"),
-                 FunctionTemplate::New(setSoftPWMSync)->GetFunction());
-#endif
-
-#ifdef __NODE_V0_11__
-    exports->Set(v8::String::NewFromUtf8(isolate, "unsetSoftPWM"),
-                 FunctionTemplate::New(isolate, pulseIn)->GetFunction());
-#else
-    exports->Set(v8::String::NewSymbol("unsetSoftPWM"),
-                 FunctionTemplate::New(unsetSoftPWM)->GetFunction());
-#endif
-
-#ifdef __NODE_V0_11__
-    exports->Set(v8::String::NewFromUtf8(isolate, "getSoftPWMLoopCount"),
-                 FunctionTemplate::New(isolate, pulseIn)->GetFunction());
-#else
-    exports->Set(v8::String::NewSymbol("getSoftPWMLoopCount"),
-                 FunctionTemplate::New(getSoftPWMLoopCount)->GetFunction());
-#endif
 
 }
 
