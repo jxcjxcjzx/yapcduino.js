@@ -1,6 +1,6 @@
 {
   "name": "yapcduino",
-  "version": "0.6.1",
+  "version": "0.7.1",
   "description": "Yet another nodejs library for pcduino (extends jheising's node.pcduino but provide simple API and some extra function).",
   "main": "index.js",
   "scripts": {
@@ -19,6 +19,6 @@
     "url": "https://github.com/zenozeng/yapcduino.js/issues"
   },
   "dependencies": {
-    "pcduino": "0.0.7"
+    "pcduino": "Senorsen/node.pcduino"
   }
 }

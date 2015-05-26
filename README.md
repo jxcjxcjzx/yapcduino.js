@@ -83,3 +83,8 @@ You can use digitalPulse to do it once. Or use startDigitalPulse
 ## Links
 
 - [How can I kill a particular thread of a process?](http://unix.stackexchange.com/questions/1066/how-can-i-kill-a-particular-thread-of-a-process)
+
+## Authors
+
+- Zeno Zeng \<zenoofzeng@gmail.com\>
+- Senorsen \<sen@senorsen.com\>
