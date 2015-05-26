@@ -16,7 +16,6 @@ npm install yapcduino --save
 
 ```javascript
 var p = require('yapcduino');
-p.PIN_COUNT // GPIO pin count
 p.pinMode(10, p.INPUT); // Set pin #10 to input
 p.pinMode(10, p.INPUT_PU); // Set pin #10 to input with pull-up
 var ret = p.digitalRead(10);
@@ -34,12 +33,7 @@ p.analogWrite(3, 16);
 var ret = p.analogRead(3);
 ```
 
-### (Sync) Delay
-
-```javascript
-p.delay(ms);
-p.delayMicroseconds(us);
-```
+### Global Mode
 
 ### Arduino Binding
 
@@ -86,7 +80,8 @@ RISING: 3
 ### SoftPWM (Powered by pthread)
 
 Use your GPIO pin to fake PWM pin using CPU.
-Improtant: SoftPWM may not be stable enough for your servo, which expects a pulse over a very tight range. Use SoftPWM in servo may cause positions jumps.
+
+**Improtant**: SoftPWM may not be stable enough for your **servo**, which expects a pulse over a very tight range. Use SoftPWM in servo may cause positions jumps.
 
 ```javascript
 var pin = 0;
@@ -122,6 +117,10 @@ The src/arduino comes from https://github.com/pcduino/c_environment
 
 ## Changelog
 
+### v0.8.1
+
+- Fix constant reference
+
 ### v0.8.0
 
 - Using nan to rewrite bindings, now should work in Node.js 0.10 and 0.12 as well as io.js.
@@ -149,8 +148,7 @@ The src/arduino comes from https://github.com/pcduino/c_environment
 
 - Add constants (now the following are supported)
 
-```javascript
-module.exports = {
+    ```
     HIGH: 0x1,
     LOW: 0x0,
 
@@ -164,8 +162,7 @@ module.exports = {
     CHANGE: 1,
     FALLING: 2,
     RISING: 3
-};
-```
+    ```
 
 - No longer requires node-pcduino now
 
