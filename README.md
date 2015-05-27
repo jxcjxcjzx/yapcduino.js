@@ -220,6 +220,10 @@ The src/arduino comes from https://github.com/pcduino/c_environment
 
 ## Changelog
 
+### v0.10.0
+
+- Add Servo API
+
 ### v0.9.3
 
 - Fix symbol lookup error (fix missing src: wiring\_shift.c, wiring\_analog.c)
