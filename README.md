@@ -106,6 +106,37 @@ for(var i = 1; i <= 180; i += 5) {
 s.stop();
 ```
 
+#### jsdoc
+
+```javascript
+/**
+ * Construct a Servo object
+ *
+ * @param {Int} pin - pwm pin to use (only 3, 5, 6, 9, 10, and 11)
+ * @param {Object} options - Options for servo
+ * @param {String} options.type - Type of your servo, available types: ['SG90']
+ * @param {Int} options.frequency - Frequency
+ */
+function Servo(pin, options) {}
+
+/**
+ * Set angle to given angle
+ *
+ * @param {Int} angle - Angle in degree
+ */
+Servo.prototype.write = function(angle) {}
+
+/**
+ * Return current angle
+ */
+Servo.prototype.read = function() {}
+
+/**
+ * Stop Servo
+ */
+Servo.prototype.stop = function() {}
+```
+
 ### SoftPWM (Powered by pthread)
 
 Use your GPIO pin to fake PWM pin using CPU.
@@ -132,7 +163,7 @@ pwm.write(dutyCycle, {period: us, loops: 1000});
 var count = pwm.getLoopCount();
 ```
 
-### jsdoc
+#### jsdoc
 
 ```javascript
 function SoftPWM(pin) {}
