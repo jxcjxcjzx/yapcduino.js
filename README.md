@@ -120,8 +120,8 @@ s.stop();
  * @param {String} options.type - Type of your servo, available types: ['default', 'SG90']
  * @param {Int} options.minPWM - PWM Value for angle 0, optional if options.type defined
  * @param {Int} options.maxPWM - PWM Value for angle max, optional if options.type defined
- * @param {Int} options.maxAngle - Max angle to reach, defaults 180
- * @param {Int} options.frequency - Frequency, defaults to 390
+ * @param {Int} options.maxAngle - Max angle to reach, defaults 180, optional if options.type defined
+ * @param {Int} options.frequency - Frequency, defaults to 390, optional if options.type defined
  */
 function Servo(pin, options) {}
 
@@ -226,82 +226,7 @@ The src/arduino comes from https://github.com/pcduino/c_environment
 
 ## Changelog
 
-### v1.0.0
-
-- Update Servo API
-
-### v0.10.0
-
-- Add Servo API
-
-### v0.9.3
-
-- Fix symbol lookup error (fix missing src: wiring\_shift.c, wiring\_analog.c)
-
-### v0.9.2
-
-- Fix delayMicroseconds
-
-    typo: delay -> delayMicroseconds
-
-### v0.9.0
-
-- Option for Global Mode
-
-    ```javascript
-    require('yapcduino')({global: true});
-    pinMode(0, OUTPUT);
-    digitalWrite(0, HIGH);
-    ```
-
-### v0.8.1
-
-- Fix constant reference
-
-### v0.8.0
-
-- Using nan to rewrite bindings, now should work in Node.js 0.10 and 0.12 as well as io.js.
-
-- Add more bindings (now the following are supported)
-
-    ```c
-    void pinMode(uint8_t, uint8_t);
-    void digitalWrite(uint8_t, uint8_t);
-    int digitalRead(uint8_t);
-    int analogRead(uint8_t);
-    void analogReference(uint8_t mode);
-    void analogWrite(uint8_t, int);
-    int pwmfreq_set(uint8_t pin, unsigned int freq);
-    unsigned long millis(void);
-    unsigned long micros(void);
-    void delay(unsigned long);
-    void delayMicroseconds(unsigned int us);
-    void delaySched(unsigned long);
-    void delayMicrosecondsSched(unsigned int us);
-    unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
-    void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
-    uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
-    ```
-
-- Add constants (now the following are supported)
-
-    ```
-    HIGH: 0x1,
-    LOW: 0x0,
-
-    INPUT: 0x0,
-    OUTPUT: 0x1,
-    INPUT_PULLUP: 0x2,
-
-    LSBFIRST: 0,
-    MSBFIRST: 1,
-
-    CHANGE: 1,
-    FALLING: 2,
-    RISING: 3
-    ```
-
-- No longer requires node-pcduino now
+See: https://github.com/zenozeng/yapcduino.js/releases
 
 ## Links
 
