@@ -68,7 +68,7 @@ NAN_METHOD(delay) {
 // void delayMicroseconds(unsigned int us);
 NAN_METHOD(delayMicroseconds) {
     NanScope();
-    delay(args[0]->NumberValue());
+    delayMicroseconds(args[0]->NumberValue());
     NanReturnUndefined();
 }
 

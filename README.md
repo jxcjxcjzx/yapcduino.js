@@ -126,6 +126,12 @@ The src/arduino comes from https://github.com/pcduino/c_environment
 
 ## Changelog
 
+### v0.9.2
+
+- Fix delayMicroseconds
+
+    typo: delay -> delayMicroseconds
+
 ### v0.9.0
 
 - Option for Global Mode
