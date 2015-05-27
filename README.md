@@ -54,8 +54,15 @@ void pinMode(uint8_t, uint8_t);
 void digitalWrite(uint8_t, uint8_t);
 int digitalRead(uint8_t);
 int analogRead(uint8_t);
+/*
+ * only pin (3/5/6/9/10/11) can be used as analog
+ */
 void analogReference(uint8_t mode);
 void analogWrite(uint8_t, int);
+/*
+ * pin(3/9/10/11) support frequency[125-2000]Hz @different dutycycle
+ * pin(5/6) support frequency[195,260,390,520,781] @256 dutycycle
+ */
 int pwmfreq_set(uint8_t pin, unsigned int freq);
 unsigned long millis(void);
 unsigned long micros(void);
