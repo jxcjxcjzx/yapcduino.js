@@ -93,6 +93,19 @@ FALLING: 2,
 RISING: 3
 ```
 
+### Servo
+
+```javascript
+require('yapcduino')({global: true});
+var s = new Servo(3, {type: 'SG90'}); // available types: ['SG90']
+for(var i = 1; i <= 180; i += 5) {
+    Native.delay(100);
+    console.log(i);
+    s.write(i);
+}
+s.stop();
+```
+
 ### SoftPWM (Powered by pthread)
 
 Use your GPIO pin to fake PWM pin using CPU.
@@ -119,7 +132,50 @@ pwm.write(dutyCycle, {period: us, loops: 1000});
 var count = pwm.getLoopCount();
 ```
 
-See the detail jsdoc in: https://github.com/zenozeng/yapcduino.js/blob/master/lib/softpwm.js
+### jsdoc
+
+```javascript
+function SoftPWM(pin) {}
+
+/**
+ * Attach the SoftPWM instance to a new pin
+ *
+ */
+SoftPWM.prototype.attach = function(pin) {}
+
+/**
+ * Detach the SoftPWM instance from original pin (will unset output of original pin and set this.pin to null)
+ *
+ */
+SoftPWM.prototype.detach = function() {}
+
+/**
+ * Get count of loops of the pin since last write
+ *
+ */
+SoftPWM.prototype.getLoopCount = function() {}
+
+/**
+ * Writes a PWM wave to a p in (using digitalWrite).
+ * To stop, simply call pwm.detach();
+ *
+ * @see http://www.arduino.cc/en/Tutorial/PWM
+ * @see http://www.arduino.cc/en/Reference/analogWrite
+ * @param {Float} dutyCycle - Duty Cycle [0, 1]
+ * @param {Object} options - Options for PWM
+ * @param {Int} options.period - Period (in us), defaults to 20 * 1000
+ * @param {Int} options.frequency - Frequency, period will be ignored if frequency set
+ * @param {Number} options.loops - (loops to live) How many loops should it run, defaults to Infinity (actually is 2147483647), note that -1 will be converted to 2147483647
+ * @param {Bool} options.sync - Whether to run it in sync mode, defaults to false
+ */
+SoftPWM.prototype.write = function(dutyCycle, options) {}
+
+/**
+ * Read last set dutyCycle (will return undefined if not set)
+ *
+ */
+SoftPWM.prototype.read = function() {}
+```
 
 ## Source
 

@@ -21,5 +21,6 @@ Object.keys(C).forEach(function(c) {
 });
 
 Pcduino.SoftPWM = require('./lib/softpwm');
+Pcduino.Servo = require('./lib/servo');
 
 module.exports = Pcduino;
