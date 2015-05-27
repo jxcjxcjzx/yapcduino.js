@@ -31,6 +31,13 @@ NAN_METHOD(analogWrite) {
     NanReturnUndefined();
 }
 
+// void analogWrite(uint8_t, int);
+NAN_METHOD(analogRead) {
+    NanScope();
+    int ret = analogRead(args[0]->NumberValue());
+    NanReturnValue(NanNew<Number>(ret));
+}
+
 
 // void analogReference(uint8_t mode);
 NAN_METHOD(analogReference) {
@@ -178,6 +185,9 @@ void yapcduino_Init(Handle<Object> exports) {
 
     exports->Set(NanNew<String>("digitalRead"),
                  NanNew<FunctionTemplate>(digitalRead)->GetFunction());
+
+    exports->Set(NanNew<String>("analogRead"),
+                 NanNew<FunctionTemplate>(analogRead)->GetFunction());
 
     exports->Set(NanNew<String>("analogWrite"),
                  NanNew<FunctionTemplate>(analogWrite)->GetFunction());
