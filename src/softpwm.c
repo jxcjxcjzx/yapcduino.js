@@ -47,6 +47,11 @@ int get_soft_pwm_loop_count(int pin, int original_loops_to_live) {
 // count can be calculated based on orginal loops_to_live and current loops_to_live
 void set_soft_pwm(int pin, int highus, int lowus, int loops_to_live) {
     PWM* pwm_ptr = &(pwms[pin]);
+
+    if (pwm_ptr->loops_to_live < 1) {
+        thread_exists[pin] = false; // thread already dead
+    }
+
     pwm_ptr->pin = pin;
     pwm_ptr->highus = highus;
     pwm_ptr->lowus = lowus;
