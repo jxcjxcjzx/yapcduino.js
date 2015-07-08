@@ -194,7 +194,7 @@ SoftPWM.prototype.getLoopCount = function() {}
 
 /**
  * Writes a PWM wave to a p in (using digitalWrite).
- * To stop, simply call pwm.detach();
+ * To stop, simply call pwm.write(0)
  *
  * @see http://www.arduino.cc/en/Tutorial/PWM
  * @see http://www.arduino.cc/en/Reference/analogWrite
