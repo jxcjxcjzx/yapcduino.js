@@ -2,9 +2,7 @@
 // Special thanks to Senorsen Zhang and Robert Zhang
 
 #include "./softpwm.h"
-
 #include "./arduino/Arduino.h"
-
 #include <unistd.h>
 #include <pthread.h>
 #include <signal.h>
@@ -22,7 +20,7 @@ typedef struct PWM PWM;
 
 pthread_t threads[18];
 PWM pwms[18];
-bool thread_exists[18];
+bool thread_exists[18] = { false };
 
 void *set_soft_pwm_for_n_loops(void* _pwm)
 {
@@ -74,6 +72,11 @@ void set_soft_pwm_sync(int pin, int highus, int lowus, int loops_to_live) {
 void unset_soft_pwm(int pin)
 {
     PWM* pwm_ptr = &(pwms[pin]);
+
+    // if thread not exists, return directly to avoid segment fault
+    if (!thread_exists[pin]) {
+        return;
+    }
 
     // wait until pthread no longer running
     while (pthread_kill(threads[pin], 0) == 0)
