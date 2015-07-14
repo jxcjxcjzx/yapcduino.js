@@ -193,6 +193,14 @@ SoftPWM.prototype.detach = function() {}
 SoftPWM.prototype.getLoopCount = function() {}
 
 /**
+ * Sync wait until this soft pwm thread finish all its work
+ *
+ */
+SoftPWM.prototype.sync = function() {
+    Native.syncWaitPin(this.pin);
+};
+
+/**
  * Writes a PWM wave to a p in (using digitalWrite).
  * To stop, simply call pwm.write(0)
  *
