@@ -73,6 +73,15 @@ void set_soft_pwm_sync(int pin, int highus, int lowus, int loops_to_live) {
     pthread_join(threads[pin], retval);
 }
 
+void sync_wait_pin(int pin) {
+    if (!thread_exists[pin]) {
+        return;
+    }
+
+    void **retval;
+    pthread_join(threads[pin], retval);
+}
+
 // (sync version) wait till pthread exited
 void unset_soft_pwm(int pin)
 {

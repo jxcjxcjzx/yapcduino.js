@@ -165,6 +165,12 @@ NAN_METHOD(getSoftPWMLoopCount) {
     NanReturnValue(NanNew<Number>(ret));
 }
 
+NAN_METHOD(syncWaitPin) {
+    NanScope();
+    sync_wait_pin(args[0]->NumberValue());
+    NanReturnUndefined();
+}
+
 /***********************************
  *
  * INIT
@@ -236,6 +242,9 @@ void yapcduino_Init(Handle<Object> exports) {
 
     exports->Set(NanNew<String>("getSoftPWMLoopCount"),
                  NanNew<FunctionTemplate>(getSoftPWMLoopCount)->GetFunction());
+
+    exports->Set(NanNew<String>("syncWaitPin"),
+                 NanNew<FunctionTemplate>(syncWaitPin)->GetFunction());
 }
 
 NODE_MODULE(yapcduino, yapcduino_Init)
